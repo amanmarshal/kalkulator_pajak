@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Pajak Gadai Islam</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input {
+      padding: 8px;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .hasil {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #fff3cd;
+      border: 1px solid #ffeeba;
+    }
+  </style>
+</head>
+<body>
+  <h2>Kalkulator Pajak Gadai Islam</h2>
+
+  <label for="mula">Tarikh Mula Pajak:</label>
+  <input type="date" id="mula">
+
+  <label for="tamat">Tarikh Tamat Pajak:</label>
+  <input type="date" id="tamat">
+
+  <label for="pinjaman">Jumlah Pinjaman (RM):</label>
+  <input type="number" id="pinjaman" placeholder="Contoh: 1000">
+
+  <label for="kadar">Kadar Upah Bulanan (%):</label>
+  <input type="number" id="kadar" step="0.01" placeholder="Contoh: 1.25">
+
+  <button onclick="kiraPajak()">Kira Sekarang</button>
+
+  <div class="hasil" id="hasil"></div>
+
+  <script>
+    function kiraPajak() {
+      const mula = new Date(document.getElementById('mula').value);
+      const tamat = new Date(document.getElementById('tamat').value);
+      const pinjaman = parseFloat(document.getElementById('pinjaman').value);
+      const kadar = parseFloat(document.getElementById('kadar').value);
+
+      if (!mula || !tamat || isNaN(pinjaman) || isNaN(kadar)) {
+        document.getElementById('hasil').innerHTML = "Sila lengkapkan semua maklumat.";
+        return;
+      }
+
+      const msSehari = 1000 * 60 * 60 * 24;
+      const tempohHari = Math.round((tamat - mula) / msSehari);
+      const upah = (pinjaman * kadar * tempohHari) / (100 * 30);
+      const jumlahBayar = pinjaman + upah;
+
+      document.getElementById('hasil').innerHTML = `
+        <strong>Tempoh Pajakan:</strong> ${tempohHari} hari<br>
+        <strong>Jumlah Upah:</strong> RM ${upah.toFixed(2)}<br>
+        <strong>Jumlah Perlu Dibayar Semula:</strong> RM ${jumlahBayar.toFixed(2)}
+      `;
+    }
+  </script>
+</body>
+</html>
